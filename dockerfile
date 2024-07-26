@@ -13,5 +13,8 @@ RUN chmod +x /usr/src/app/entrypoint.sh
 # Install Git
 RUN apt-get update && apt-get install -y git
 
+# Install permaweb-deploy
+RUN npm install -g permaweb-deploy
+
 # Run the entrypoint script
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

@@ -1,2 +1,6 @@
 node_modules
 .env
+dist
+dist-id.txt
+dist-manifest.csv
+dist-manifest.json

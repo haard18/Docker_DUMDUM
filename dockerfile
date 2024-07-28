@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:16
+FROM node:18
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -12,9 +12,8 @@ RUN chmod +x /usr/src/app/entrypoint.sh
 
 # Install Git
 RUN apt-get update && apt-get install -y git
-
-# Install permaweb-deploy
-RUN npm install -g permaweb-deploy
+# Install Irys SDK
+RUN npm install @irys/sdk
 
 # Run the entrypoint script
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

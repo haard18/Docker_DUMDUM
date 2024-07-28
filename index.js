@@ -4,6 +4,7 @@ const Docker = require('dockerode');
 const docker = new Docker();
 const mongoose=require('mongoose');
 const Deployement = require('./deploy');
+
 require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
@@ -47,22 +48,23 @@ app.get('/getDeployement',async(req,res)=>{
     }
 })
 app.post('/build', async (req, res) => {
-    const { githubUrl, installCommand, buildCommand, outputFolder, wallet, antProcessId } = req.body;
+    const { githubUrl, installCommand, buildCommand, outputFolder } = req.body;
 
-    if (!githubUrl || !installCommand || !buildCommand || !outputFolder || !wallet || !antProcessId) {
+    if (!githubUrl || !installCommand || !buildCommand || !outputFolder  ) {
         return res.status(400).send('GITHUB_URL, INSTALL_COMMAND, BUILD_COMMAND, OUTPUT_FOLDER, WALLET, and ANT_PROCESS_ID are required');
     }
-
+    const wallet = process.env.DEPLOY_KEY;
+    console.log(wallet);
     try {
         const container = await docker.createContainer({
-            Image: 'hardy18/gitbuild:latest',
+            Image: 'hardy18/dumdumdeploy',
             Env: [
                 `GITHUB_URL=${githubUrl}`,
                 `INSTALL_COMMAND=${installCommand}`,
                 `BUILD_COMMAND=${buildCommand}`,
                 `OUTPUT_FOLDER=${outputFolder}`,
                 `DEPLOY_KEY=${wallet}`,
-                `ANT_PROCESS_ID=${antProcessId}`
+                // `ANT_PROCESS_ID=${antProcessId}`
             ],
             AttachStdout: true,
             AttachStderr: true
